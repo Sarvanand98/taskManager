@@ -7,7 +7,10 @@ const taskRoutes = require('./routes/tasks');
 const userRoutes = require('./routes/user');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+	origin: 'https://taskman-garud-nextjs.netlify.app',
+	credentials: true
+}));
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI);
