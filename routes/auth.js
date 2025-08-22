@@ -6,11 +6,11 @@ const router = express.Router();
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = new User({ username, password });
+  const { email, password } = req.body;
+  const user = new User({ email, password });
     await user.save();
     const token = jwt.sign({ id: user._id }, 'SECRET_KEY');
-    res.json({ token, username: user.username });
+  res.json({ token, email: user.email });
   } catch (err) {
     res.status(400).json({ message: 'Registration failed' });
   }
@@ -19,12 +19,12 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password)))
       return res.status(400).json({ message: 'Invalid credentials' });
     const token = jwt.sign({ id: user._id }, 'SECRET_KEY');
-    res.json({ token, username: user.username });
+  res.json({ token, email: user.email });
   } catch (err) {
     res.status(400).json({ message: 'Login failed' });
   }
